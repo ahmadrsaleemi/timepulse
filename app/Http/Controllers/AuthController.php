@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\EmployeeDetails;
 use Illuminate\Support\Facades\Hash;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -12,12 +13,9 @@ class AuthController extends Controller
 	public function signup(Request $request)
 	{
 		$request->validate([
-			'name'      => 'required|string',
-			'email'     => 'required|email',
-			'password'  => 'required|min:6'
+			'first_name'	=> 'required|string',
+			'email'			=> 'required|email'
 		]);
-
-		//check if user already exists
 
 		$userExist = User::where('email', $request->email)->exists();
 		if(!empty($userExist))
@@ -30,10 +28,25 @@ class AuthController extends Controller
 		}
 
 		$user = User::create([
-			'name'      => $request->name,
+			'name'      => $request->first_name,
 			'email'     => $request->email,
 			'password'  => Hash::make($request->password),
 			'type'      => $request->type
+		]);
+
+		$user_id = $user->id;
+		$employee_details = EmployeeDetails::create([
+			'user_id'				=> $user_id,
+			'assigned_company_id'	=> $request->assigned_company_id ?? null,
+			'first_name'			=> $request->first_name,
+			'last_name'				=> $request->last_name ?? null,
+			'email'					=> $request->email ?? null,
+			'phone'					=> $request->phone ?? null,
+			'position'				=> $request->position ?? null,
+			'department'			=> $request->department ?? null,
+			'hire_date'				=> $request->hire_date ?? null,
+			'salary'				=> $request->salary ?? null,
+			'address'				=> $request->address ?? null
 		]);
 
 		return response()->json([

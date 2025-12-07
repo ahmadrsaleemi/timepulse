@@ -8,7 +8,7 @@ use App\Models\ClientCompany;
 
 class ClientCompanyController extends Controller
 {
-	public function add_client_company(Request $request)
+	public function addClientCompany(Request $request)
 	{
 		$request->validate([
 			'name'      => 'required|string'
