@@ -42,4 +42,39 @@ class EmployeeController extends Controller
 			]
 		]);
 	}
+
+	public function clockOut(Request $request)
+	{
+		$user_id = auth()->user()->id;
+		$date = date("Y-m-d");
+		$clockout = date("Y-m-d H:i:s");
+
+		$employeeClock = EmployeeClock::where('user_id', $user_id)->where('date', $date)->first();
+
+		if(empty($employeeClock))
+		{
+			return response()->json([
+				'success'	=> false,
+				'message'	=> 'Clock In for ' . $date .' not found',
+				'data'		=> []
+			], 401);
+		}
+
+		// $employeeClock->update([
+		// 	'clock_out'	=> $clockout
+		// ]);
+
+		$employeeClock->clock_out = $clockout;
+		$employeeClock->save();
+
+		//lets do a return in response
+		return response()->json([
+			'success'	=> true,
+			'message'	=> 'Clock-out successful',
+			'data'		=> [
+				'user'		=> auth()->user(),
+				'timestamp'	=> $clockout
+			]
+		]);
+	}
 }
