@@ -60,6 +60,24 @@ class AuthController extends Controller
     {
 		$credentials = $request->only('email', 'password');
 
+		$user = User::where('email', $request->email)->first();
+
+		if (!$user)
+		{
+			return response()->json([
+				'success' => false,
+				'message' => 'Invalid email or password',
+			], 401);
+		}
+
+		if($user->status == 0)
+		{
+			return response()->json([
+				'success' => false,
+				'message' => 'Your account is not active. Please contact administrator.',
+			], 403);
+		}
+
 		if (!$token = JWTAuth::attempt($credentials))
 		{
 			return response()->json([
@@ -71,7 +89,38 @@ class AuthController extends Controller
 		return response()->json([
 			'success'	=> true,
 			'token'		=> $token,
-			'user'		=> auth()->user()
+			'data'		=> [
+				'user'	=> auth()->user()
+			]
 		]);
     }
+
+	public function deactivateUser(Request $request)
+	{
+		$request->validate([
+			'user_id'	=> 'required|integer'
+		]);
+
+		$user_id = $request->user_id;
+
+		$user = User::find($user_id);
+		if(empty($user))
+		{
+			return response()->json([
+				'success' => false,
+				'message' => 'Invalid user',
+			], 401);
+		}
+
+		$user->status = 0;
+		$user->save();
+
+		return response()->json([
+			'success'	=> true,
+			'message'	=> 'User deactivated',
+			'data'		=> [
+				'user'	=> $user
+			]
+		]);
+	}
 }
