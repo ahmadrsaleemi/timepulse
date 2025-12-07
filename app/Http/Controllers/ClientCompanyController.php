@@ -17,6 +17,16 @@ class ClientCompanyController extends Controller
 		$user_id = auth()->user()->id;
 		$name = $request->name;
 
+		$companyExists = ClientCompany::where('name', $name)->first();
+		if(!empty($companyExists))
+		{
+			return response()->json([
+				'success'   => false,
+				'message'   => 'Vendor already registered!',
+				'user'      => []
+			]);
+		}
+
 		$client_company = ClientCompany::create([
 			'name'		=> $name,
 			'user_id'	=> $user_id
