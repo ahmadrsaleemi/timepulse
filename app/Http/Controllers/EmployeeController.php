@@ -1,0 +1,45 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\EmployeeClock;
+use Carbon\Carbon;
+use JWTAuth;
+
+class EmployeeController extends Controller
+{
+	public function clockIn(Request $request)
+	{
+		$user_id = auth()->user()->id;
+		$date = date("Y-m-d");
+		$clockin = date("Y-m-d H:i:s");
+
+		$checkinExist = EmployeeClock::where('user_id', $user_id)->where('date', $date)->exists();
+
+		if(!empty($checkinExist))
+		{
+			return response()->json([
+				'success'	=> false,
+				'message'	=> 'Clock In for ' . $clockin .' already exists',
+				'data'		=> []
+			], 401);
+		}
+
+		$employee_clockin = EmployeeClock::create([
+			'user_id'	=> $user_id,
+			'date'		=> $date,
+			'clock_in'	=> $clockin
+		]);
+
+		//lets do a return in response
+		return response()->json([
+			'success'	=> true,
+			'message'	=> 'Clock In successful',
+			'data'		=> [
+				'user'		=> auth()->user(),
+				'timestamp'	=> $clockin
+			]
+		]);
+	}
+}
