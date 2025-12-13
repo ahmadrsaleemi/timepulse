@@ -59,7 +59,6 @@ class AuthController extends Controller
 	public function signin(Request $request)
     {
 		$credentials = $request->only('email', 'password');
-
 		$user = User::where('email', $request->email)->first();
 
 		if (!$user)
