@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { TextField, Button, Container, Box, Typography } from "@mui/material";
 
 export default function Login() {
   const { login } = useAuth();
@@ -42,31 +43,40 @@ export default function Login() {
     }
   };
   return (
-    <div style={{ width: "300px", margin: "50px auto" }}>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
+    <Container maxWidth="sm">
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{ mt: 8, p: 4, boxShadow: 3, borderRadius: 2 }}
+      >
+        <Typography variant="h5" mb={3}>
+          Login
+        </Typography>
+        <TextField
+          label="Email"
+          fullWidth
+          margin="normal"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
         />
-        <br />
-        <br />
-        <input
+        <TextField
+          label="Password"
           type="password"
-          placeholder="Password"
+          fullWidth
+          margin="normal"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <br />
-        <br />
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
-
-        <button type="submit">Login</button>
-      </form>
-    </div>
+        {error && (
+          <Typography color="error" mt={1}>
+            {error}
+          </Typography>
+        )}
+        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
+          Login
+        </Button>
+      </Box>
+    </Container>
   );
 }

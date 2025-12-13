@@ -1,3 +1,8 @@
+import AppLayout from "../components/layout/AppLayout";
 export default function DashboardAdmin() {
-  return <h1>Admin Dashboard</h1>;
+  return (
+    <AppLayout>
+      <h2>Admin Dashboard</h2>
+    </AppLayout>
+  );
 }
