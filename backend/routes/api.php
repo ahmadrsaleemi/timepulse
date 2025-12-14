@@ -18,6 +18,7 @@ Route::middleware(['jwt.auth'])->group(function() {
     Route::post('/user/deactivate', [AuthController::class, 'deactivateUser']);
     Route::post('/employee/clockin', [EmployeeController::class, 'clockIn']);
     Route::post('/employee/clockout', [EmployeeController::class, 'clockOut']);
+    Route::post('/employee/punch/status', [EmployeeController::class, 'punchStatus']);
     Route::post('/client_company/add', [ClientCompanyController::class, 'addClientCompany']);
     Route::post('/employee/details/add',[EmployeeController::class, 'addEmployeeDetails']);
 });

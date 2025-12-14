@@ -77,4 +77,34 @@ class EmployeeController extends Controller
 			]
 		]);
 	}
+
+	public function punchStatus(Request $request)
+	{
+		$user_id = auth()->user()->id;
+		$dateToday = date("Y-m-d");
+		$employeeClock = EmployeeClock::where('user_id', $user_id)->where('date', $dateToday)->first();
+
+		if(!$employeeClock)
+		{
+			return response()->json([
+				'success'	=> true,
+				'message'	=> 'Clock-in display',
+				'data'		=> [
+					'user'		=> auth()->user(),
+					'clocked_in'	=>	false
+				]
+			]);
+		}
+		return response()->json([
+			'success'	=> true,
+			'message'	=> 'Clock-out display',
+			'data'		=> [
+				'user'				=> auth()->user(),
+				'clocked_in'		=> true,
+				'clock_in_time' 	=>	$employeeClock->clock_in,
+				'clocked_out'		=> !is_null($employeeClock->clock_out),
+				'clock_out_time'	=>	$employeeClock->clock_out ?? false
+			]
+		]);
+	}
 }
