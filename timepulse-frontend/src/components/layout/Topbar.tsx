@@ -17,8 +17,8 @@ export default function TopBar() {
     <AppBar
       position="fixed"
       sx={{
-        width: "calc(100% - ${drawerWidth}px)",
-        ml: "${drawerWidth}px",
+        width: `calc(100% - ${drawerWidth}px)`,
+        ml: `${drawerWidth}px`,
       }}
     >
       <Toolbar sx={{ justifyContent: "space-between" }}>

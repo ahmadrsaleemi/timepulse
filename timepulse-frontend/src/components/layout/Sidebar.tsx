@@ -4,6 +4,7 @@ import {
   ListItemButton,
   ListItemText,
   Divider,
+  Typography,
 } from "@mui/material";
 
 import { useNavigate } from "react-router-dom";
@@ -20,9 +21,19 @@ export default function Sidebar() {
       variant="permanent"
       sx={{
         width: drawerWidth,
-        "& .MuiDrawer-paper": { width: drawerWidth, boxSizing: "border-box" },
+        flexShrink: 0,
+        height: "100vh",
+        "& .MuiDrawer-paper": {
+          width: drawerWidth,
+          boxSizing: "border-box",
+          height: "100vh",
+        },
       }}
     >
+      <Typography variant="h6" fontWeight="bold">
+        LOGO
+      </Typography>
+      <Divider />
       <List>
         <ListItemButton onClick={() => navigate("/employee")}>
           <ListItemText primary="Dashboard" />
