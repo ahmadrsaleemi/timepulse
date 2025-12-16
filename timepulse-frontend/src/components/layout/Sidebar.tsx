@@ -35,9 +35,20 @@ export default function Sidebar() {
       </Typography>
       <Divider />
       <List>
-        <ListItemButton onClick={() => navigate("/employee")}>
-          <ListItemText primary="Dashboard" />
-        </ListItemButton>
+        {user?.type === 0 && (
+          <>
+            <ListItemButton onClick={() => navigate("/admin")}>
+              <ListItemText primary="Dashboard" />
+            </ListItemButton>
+          </>
+        )}
+        {user?.type === 10 && (
+          <>
+            <ListItemButton onClick={() => navigate("/employee")}>
+              <ListItemText primary="Dashboard" />
+            </ListItemButton>
+          </>
+        )}
         <ListItemButton onClick={() => navigate("/punchtime")}>
           <ListItemText primary="Punch Time" />
         </ListItemButton>
