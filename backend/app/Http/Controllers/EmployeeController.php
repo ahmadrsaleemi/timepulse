@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\EmployeeClock;
+use App\Models\EmployeeDetails;
 use Carbon\Carbon;
 use JWTAuth;
 
@@ -104,6 +105,24 @@ class EmployeeController extends Controller
 				'clock_in_time' 	=>	$employeeClock->clock_in,
 				'clocked_out'		=> !is_null($employeeClock->clock_out),
 				'clock_out_time'	=>	$employeeClock->clock_out ?? false
+			]
+		]);
+	}
+
+	public function employeeList(Request $request)
+	{
+		$perPage = 10;
+		$employees = EmployeeDetails::paginate($perPage);
+
+		return response()->json([
+			'success' => true,
+			'message' => 'Employee details list!',
+			'data' => $employees->items(),
+			'meta' => [
+				'current_page' => $employees->currentPage(),
+				'per_page'     => $employees->perPage(),
+				'total'        => $employees->total(),
+				'last_page'    => $employees->lastPage(),
 			]
 		]);
 	}
